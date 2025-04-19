@@ -4,10 +4,12 @@ const port = 3000;
 const path = require("node:path");
 const mongoose = require('mongoose');
 
+app.set('view engine', 'ejs');
+
 
 app.get('/', (req, res) => {
-  console.log(__dirname + "/views/index.html");
-  res.sendFile(__dirname + "/views/index.html");
+  // res.sendFile(__dirname + "/views/index.html");
+  res.render('index');
 });
 
 app.listen(port, () => {
