@@ -24,7 +24,23 @@
       <h1 id='title'>Movie Tracker</h1>
     </div>
 
-    <div class="form-container d-flex justify-content-center">
+    <div class="form-container d-flex justify-content-center" id="movie-form">
+      <form action="/" method="POST">
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            <label class="sr-only" for="title">Name</label>
+            <input type="text" class="form-control mb-2" id="findMovieInput" name="title" placeholder="Enter Film Title">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-2">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+
+    <!-- <div class="form-container d-flex justify-content-center">
       <form>
         <div class="form row d-flex justify-content-center">
           <div class="form-group col-md-2">
@@ -52,9 +68,7 @@
           <button type="submit" class="btn btn-primary">Submit</button>
         </div>
       </form>
-    </div>
+    </div> -->
     
-
-    <!-- <script src="index.js"></script> -->
   </body>
 </html>

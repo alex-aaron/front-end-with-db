@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const Movie = require('./models/movie');
 
 app.set('view engine', 'ejs');
+app.use(express.json());
 app.use(express.urlencoded( { extended: false }));
 
 mongoose.connect(
@@ -18,6 +19,24 @@ mongoose.connect(
 app.get('/', (req, res) => {
   // res.sendFile(__dirname + "/views/index.html");
   res.render('index');
+});
+
+app.post('/', (req, res) => {
+  const title = req.body.title.split(" ").join("+");
+
+  const apiResponse = async (inputTitle) => {
+    try {
+      await fetch(`http://www.omdbapi.com/?t=${inputTitle}&apikey=b8f921ba`)
+      .then(res => res.json())
+      .then(res => {
+        res.send(?)
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const response = apiResponse(title);
 });
 
 app.post('/', (req, res) => {
