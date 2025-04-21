@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
-app.post('/', (req, res) => {
+app.post('/', (req, resp) => {
   const title = req.body.title.split(" ").join("+");
 
   const apiResponse = async (inputTitle) => {
@@ -29,7 +29,15 @@ app.post('/', (req, res) => {
       await fetch(`http://www.omdbapi.com/?t=${inputTitle}&apikey=b8f921ba`)
       .then(res => res.json())
       .then(res => {
-        res.send(?)
+        console.log(res);
+        resp.render('findMovie', {
+          title: res.Title,
+          director: res.Director,
+          plot: res.Plot,
+          country: res.Country,
+          poster: res.Poster,
+          year: res.Year
+        });
       });
     } catch (e) {
       console.log(e);
