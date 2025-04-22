@@ -26,6 +26,14 @@
         padding: 10px;
       }
 
+      .watched-film-input-container {
+        padding: 10px;
+      }
+
+      .search-again-container {
+        padding: 10px;
+      }
+
     </style>
   </head>
   <body>
@@ -51,8 +59,36 @@
     </div>
     <hr>
 
-    <div class="d-flex justify-content-center">
-      <form action="/movies">
+    <div class='container'>
+      <div class="row justify-content-center">
+        <div class="col-4">
+          <div class='card'>
+            <div class="container watched-film-input-container">
+              <form action="/movies" method="POST">
+                <div class="form-group">
+                  <label for="watchedFilmInput">Have you watched this film?</label>
+                  <input type="text" class="form-control" id="watchedFilmInput" aria-describedby="emailHelp" placeholder="Enter true or false">
+                </div>
+                <button type="submit" class="btn btn-primary">Add film</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="card">
+            <div class="container search-again-container">
+              <form action="/" method="GET">
+                <p>Click to search again.</p>
+                <button type='submit' class="btn btn-primary">Search Again</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="d-flex justify-content-center">
+      <form action="/movies" method="POST">
         <div class="form-check form-check-inline">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
           <label class="form-check-label" for="inlineCheckbox1">Yes, add it</label>
@@ -71,13 +107,7 @@
           </div>
         </div>
       </form>
-    </div>
-
-    <script>
-      const addMovieSubmit = document.getElementById('addMovieForm');
-
-      addMovieSubmit.addEventListener()
-    </script>
+    </div> -->
     
     
   </body>
