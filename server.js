@@ -47,15 +47,16 @@ app.post('/', (req, resp) => {
   const response = apiResponse(title);
 });
 
-app.post('/', (req, res) => {
-
-  const movie = new Movie({
-    title: req.body.title,
-    director: req.body.director,
-    year: req.body.year,
-    watched: req.body.watched,
-    platform: req.body.platform
-  })
+app.post('/movies', (req, res) => {
+  console.log('hit this route');
+  console.log(req.body);
+  // const movie = new Movie({
+  //   title: req.body.title,
+  //   director: req.body.director,
+  //   year: req.body.year,
+  //   watched: req.body.watched,
+  //   platform: req.body.platform
+  // })
 });
 
 app.listen(port, () => {
