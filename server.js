@@ -16,9 +16,21 @@ mongoose.connect(
     console.log('Connection failed');
 });
 
+const findMovie = async () => {
+  const firstMovie = await Movie.findOne({});
+  console.log(firstMovie);
+}
+
+
+findMovie();
+
 app.get('/', (req, res) => {
   // res.sendFile(__dirname + "/views/index.html");
   res.render('index');
+});
+
+app.get('/movies', (req, res) => {
+  res.render('movies');
 });
 
 app.post('/', (req, resp) => {
@@ -36,7 +48,8 @@ app.post('/', (req, resp) => {
           country: res.Country,
           poster: res.Poster,
           year: res.Year,
-          runTime: res.Runtime
+          runTime: res.Runtime,
+          imdbID: res.imdbID
         });
       });
     } catch (e) {
@@ -50,9 +63,9 @@ app.post('/', (req, resp) => {
 app.post('/movies', (req, res) => {
   const title = req.body.title;
   const year = req.body.year;
-  const query = req.body.title.split(" ").join("%20");
+  const imdbID = req.body.imdbID;
 
-  const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+  const url = `https://api.themoviedb.org/3/find/${imdbID}?external_source=imdb_id`;
   const options = {
     method: 'GET',
     headers: {
@@ -60,11 +73,12 @@ app.post('/movies', (req, res) => {
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjY2M4NjMwNDM4N2NmNTI2NGY2ZTQ0NTcyNGJlOTQ0ZCIsIm5iZiI6MTY2Mzg2OTg1Ny41NjQsInN1YiI6IjYzMmNhM2ExYzJmNDRiMDA3ZTE0ZmMyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4uMclJNWykMdDgQRrPQTSn0qAcMYdS2X9pTpoVTwnCw'
     }
   };
+  
     
     fetch(url, options)
       .then(res => res.json())
       .then(res => {
-        const movie = res.results.find(m => m.title === title && m.release_date.split("-")[0] === year);
+        const movie = res.movie_results[0];
     
         const url = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`;
 
@@ -79,7 +93,6 @@ app.post('/movies', (req, res) => {
         fetch(url, options)
           .then(res => res.json())
           .then(res => {
-            console.log(res);
             const services = ['Tubi TV', 'Pluto TV', 'Max', 'Mubi', 'Criterion Channel', 'Netflix', 'Paramount Plus', 'Kanopy', 'MUBI', 'Amazon Prime Video'];
             const streaming = [];
             if (res.results.US.ads){
@@ -96,22 +109,26 @@ app.post('/movies', (req, res) => {
               title: req.body.title,
               director: req.body.director,
               year: req.body.year,
-              runTime: req.body.runTime,
+              runTime: req.body.runtime,
               watched: req.body.watchedFilm,
               streaming: streaming
             });
 
-            console.log(filmToAdd);
-            
-      
+            const addFilm = async (film) => {
+              const result = await film.save();
+              return result;
+            }
+
+            try {
+              addFilm(filmToAdd);
+              originalRes.redirect('/movies');
+            } catch (e) {
+              console.log(e);
+            }
           })
           .catch(err => console.error(err));
-    
-    
       })
       .catch(err => console.error(err));
-
-  
 });
 
 app.listen(port, () => {
