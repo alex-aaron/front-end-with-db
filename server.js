@@ -17,7 +17,7 @@ mongoose.connect(
 });
 
 const findMovie = async () => {
-  const firstMovie = await Movie.findOne({});
+  const firstMovie = await Movie.find({ title: 'The Red Circle'});
   console.log(firstMovie);
 }
 
@@ -60,7 +60,7 @@ app.post('/', (req, resp) => {
   const response = apiResponse(title);
 });
 
-app.post('/movies', (req, res) => {
+app.post('/movies', (req, resp) => {
   const title = req.body.title;
   const year = req.body.year;
   const imdbID = req.body.imdbID;
@@ -121,7 +121,7 @@ app.post('/movies', (req, res) => {
 
             try {
               addFilm(filmToAdd);
-              originalRes.redirect('/movies');
+              resp.redirect('/movies');
             } catch (e) {
               console.log(e);
             }
