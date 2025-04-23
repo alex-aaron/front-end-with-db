@@ -29,14 +29,14 @@ app.post('/', (req, resp) => {
       await fetch(`http://www.omdbapi.com/?t=${inputTitle}&apikey=b8f921ba`)
       .then(res => res.json())
       .then(res => {
-        console.log(res);
         resp.render('findMovie', {
           title: res.Title,
           director: res.Director,
           plot: res.Plot,
           country: res.Country,
           poster: res.Poster,
-          year: res.Year
+          year: res.Year,
+          runTime: res.Runtime
         });
       });
     } catch (e) {
@@ -48,17 +48,70 @@ app.post('/', (req, resp) => {
 });
 
 app.post('/movies', (req, res) => {
-  console.log(req.body);
-  // fetch movie from TMDB to get id
-    // use id to fetch streaming services
-    // once streaming services have been accumulated into array, create movie instance?
-    // redirect once data has been posted
-  const movie = new Movie({
-    title: req.body.title,
-    director: req.body.director,
-    year: req.body.year,
-    watched: req.body.watchedFilm,
-  });
+  const title = req.body.title;
+  const year = req.body.year;
+  const query = req.body.title.split(" ").join("%20");
+
+  const url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+  const options = {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjY2M4NjMwNDM4N2NmNTI2NGY2ZTQ0NTcyNGJlOTQ0ZCIsIm5iZiI6MTY2Mzg2OTg1Ny41NjQsInN1YiI6IjYzMmNhM2ExYzJmNDRiMDA3ZTE0ZmMyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4uMclJNWykMdDgQRrPQTSn0qAcMYdS2X9pTpoVTwnCw'
+    }
+  };
+    
+    fetch(url, options)
+      .then(res => res.json())
+      .then(res => {
+        const movie = res.results.find(m => m.title === title && m.release_date.split("-")[0] === year);
+    
+        const url = `https://api.themoviedb.org/3/movie/${movie.id}/watch/providers`;
+
+        const options = {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJjY2M4NjMwNDM4N2NmNTI2NGY2ZTQ0NTcyNGJlOTQ0ZCIsIm5iZiI6MTY2Mzg2OTg1Ny41NjQsInN1YiI6IjYzMmNhM2ExYzJmNDRiMDA3ZTE0ZmMyZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.4uMclJNWykMdDgQRrPQTSn0qAcMYdS2X9pTpoVTwnCw'
+          }
+        };
+    
+        fetch(url, options)
+          .then(res => res.json())
+          .then(res => {
+            console.log(res);
+            const services = ['Tubi TV', 'Pluto TV', 'Max', 'Mubi', 'Criterion Channel', 'Netflix', 'Paramount Plus', 'Kanopy', 'MUBI', 'Amazon Prime Video'];
+            const streaming = [];
+            if (res.results.US.ads){
+              res.results.US.ads.forEach(item => services.includes(item.provider_name) ? streaming.push(item.provider_name) : streaming);
+            }
+            if (res.results.US.flatrate){
+              res.results.US.flatrate.forEach(item => services.includes(item.provider_name) ? streaming.push(item.provider_name) : streaming);
+            }
+            if (res.results.US.free){
+              res.results.US.free.forEach(item => services.includes(item.provider_name) ? streaming.push(item.provider_name) : streaming);
+            }
+
+            const filmToAdd = new Movie({
+              title: req.body.title,
+              director: req.body.director,
+              year: req.body.year,
+              runTime: req.body.runTime,
+              watched: req.body.watchedFilm,
+              streaming: streaming
+            });
+
+            console.log(filmToAdd);
+            
+      
+          })
+          .catch(err => console.error(err));
+    
+    
+      })
+      .catch(err => console.error(err));
+
+  
 });
 
 app.listen(port, () => {

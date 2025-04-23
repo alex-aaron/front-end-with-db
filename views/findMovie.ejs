@@ -63,7 +63,7 @@
         <div class="col-4">
           <p><b>Title:</b> <%= title %></p>
           <p><b>Director:</b> <%= director %></p>
-          <p><b>Year:</b><%= year %></p>
+          <p><b>Year:</b> <%= year %></p>
           <p><b>Plot:</b> <%= plot %></p>
         </div>
       </div>
@@ -80,29 +80,36 @@
           <input type="text" class="form-control" name="title" id="title" value="<%= title %>">
         </div>
         <div class="form-group col-md-6">
-          <label for="title">Director</label>
+          <label for="director">Director</label>
           <input type="text" class="form-control" name="director" id="director" value="<%= director %>">
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="title">Year</label>
+          <label for="year">Year</label>
           <input type="text" class="form-control" name="year" id="year" value="<%= year %>">
         </div>
         <div class="form-group col-md-6">
-          <label for="title">Plot</label>
+          <label for="plot">Plot</label>
           <input type="text-area" class="form-control" name="plot" id="plot" value="<%= plot %>">
         </div>
       </div>
 
       <div class="form-row">
         <div class="form-group col-md-6">
-          <label for="title">Country</label>
+          <label for="country">Country</label>
           <input type="text" class="form-control" name="country" id="country" value="<%= country %>">
         </div>
         <div class="form-group col-md-6">
-          <label for="title">Have you watched this film?</label>
+          <label for="runtime">Runtime</label>
+          <input type="text" class="form-control" name="runtime" id="runtime" value="<%= runTime %>">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="watchedFilm">Have you watched this film?</label>
           <input type="text" class="form-control" name="watchedFilm" id="watchedFilm" placeholder="Enter true or false">
         </div>
       </div>
