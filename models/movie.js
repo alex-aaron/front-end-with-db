@@ -13,13 +13,17 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  runTime: {
+    type: Number,
+    required: true
+  },
   watched: {
     type: Boolean,
     required: true
   },
-  platform: {
-    type: String,
-    required: true
+  streaming: {
+    type: [String],
+    required: true,
   }
 });
 

@@ -49,6 +49,10 @@ app.post('/', (req, resp) => {
 
 app.post('/movies', (req, res) => {
   console.log(req.body);
+  // fetch movie from TMDB to get id
+    // use id to fetch streaming services
+    // once streaming services have been accumulated into array, create movie instance?
+    // redirect once data has been posted
   const movie = new Movie({
     title: req.body.title,
     director: req.body.director,
