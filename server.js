@@ -16,13 +16,13 @@ mongoose.connect(
     console.log('Connection failed');
 });
 
-const findMovie = async () => {
-  const firstMovie = await Movie.find({ title: 'The Red Circle'});
-  console.log(firstMovie);
+const findMovies = async () => {
+  const movies = await Movie.find({});
+  console.log(movies);
 }
 
 
-// findMovie();
+// findMovies();
 
 app.get('/', (req, res) => {
   // res.sendFile(__dirname + "/views/index.html");
